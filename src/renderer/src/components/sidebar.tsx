@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
@@ -9,16 +9,18 @@ interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
   favoriteServers: any
+  navOpened: boolean
+  setNavOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Sidebar({
   className,
   isCollapsed,
   setIsCollapsed,
-  favoriteServers
+  favoriteServers,
+  navOpened,
+  setNavOpened
 }: SidebarProps) {
-  const [navOpened, setNavOpened] = useState(false)
-
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
     if (navOpened) {
@@ -45,19 +47,13 @@ export default function Sidebar({
 
       <aside
         className={cn(
-          `fixed left-0 top-0 z-50 h-full w-64 border-r-2 border-r-muted transition-all lg:bottom-0 lg:right-auto lg:h-screen ${isCollapsed ? 'lg:w-14' : 'lg:w-64'}`,
+          `fixed left-0 top-0 z-50 h-full w-64 border-r-2 border-r-muted transition-all bg-background lg:bottom-0 lg:right-auto lg:h-screen ${isCollapsed ? 'lg:w-14' : 'lg:w-64'}`,
           navOpened ? 'block' : 'hidden lg:block',
           className
         )}
       >
-        {/* Overlay in mobile */}
-        <div
-          onClick={() => setNavOpened(false)}
-          className={`absolute inset-0 transition-opacity duration-300 ${navOpened ? 'h-full opacity-50' : 'h-0 opacity-0'} w-full bg-black lg:hidden`}
-        />
-
         {/* Header */}
-        <div className="flex justify-between px-4 py-3 shadow lg:px-4">
+        <div className="flex justify-between px-4 py-3 shadow lg:px-4 relative">
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
             <img
               src={bunnyLogo}
@@ -71,6 +67,16 @@ export default function Sidebar({
               <span className="font-medium">Bunny</span>
             </div>
           </div>
+          {/* Close Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-0 right-0 m-2 lg:hidden"
+            aria-label="Close Navigation"
+            onClick={() => setNavOpened(false)}
+          >
+            <IconX />
+          </Button>
         </div>
 
         {/* Favorited Servers */}

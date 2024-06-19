@@ -16,11 +16,11 @@ export function CarouselPlugin({ servers, onToggleFavorite }) {
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="w-full"
+      className="w-full relative"
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
-      <CarouselContent className="-ml-1">
+      <CarouselContent className="-ml-1 pr-4 lg:pr-8">
         {servers.map((server) => (
           <CarouselItem key={server.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
             <div className="p-1 relative">
@@ -36,8 +36,8 @@ export function CarouselPlugin({ servers, onToggleFavorite }) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="absolute -left-6 lg:-left-16" />
+      <CarouselNext className="absolute -right-6 lg:-right-8" />
     </Carousel>
   )
 }

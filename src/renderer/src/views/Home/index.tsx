@@ -27,6 +27,7 @@ const servers = [
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const [favoriteServers, setFavoriteServers] = React.useState([])
+  const [navOpened, setNavOpened] = React.useState(false)
 
   const handleToggleFavorite = (server) => {
     setFavoriteServers((prevFavorites: any) => {
@@ -39,18 +40,30 @@ export default function Home() {
   }
 
   return (
-    <div className="container h-screen flex flex-col lg:flex-row bg-background lg:max-w-none lg:px-0">
+    <div
+      className={`container h-screen flex flex-col lg:flex-row bg-background lg:max-w-none lg:px-0 ${navOpened ? 'overflow-hidden' : ''}`}
+    >
       <Sidebar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         favoriteServers={favoriteServers}
+        navOpened={navOpened}
+        setNavOpened={setNavOpened}
       />
 
-      <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0">
-        <div className="w-full max-w-5xl">
+      {/* Overlay for mobile */}
+      {navOpened && (
+        <div
+          className="fixed inset-0 z-40 bg-black opacity-50 lg:hidden"
+          onClick={() => setNavOpened(false)}
+        ></div>
+      )}
+
+      <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0 overflow-hidden">
+        <div className="w-full max-w-4xl lg:mx-4 xl:mx-8">
           <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
         </div>
-        {/* Adicione outros componentes abaixo conforme necessário */}
+        {/* Add other components below as needed */}
       </div>
     </div>
   )
