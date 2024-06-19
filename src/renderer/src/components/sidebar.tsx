@@ -3,14 +3,23 @@ import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import bunnyLogo from '@/assets/bunny.png'
+import { Card, CardContent } from '@/components/ui/card'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+  favoriteServers: any
 }
 
-export default function Sidebar({ className, isCollapsed, setIsCollapsed }: SidebarProps) {
+export default function Sidebar({
+  className,
+  isCollapsed,
+  setIsCollapsed,
+  favoriteServers
+}: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
+
+  console.log('favoriteServers', favoriteServers)
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
@@ -64,8 +73,32 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }: Side
         </Button>
       </div>
 
-      {/* Navigation links */}
-      {/* enfiar os cards aq */}
+      {/* Favorited Servers */}
+      <div className={`p-4 space-y-4 ${isCollapsed ? 'hidden' : 'block'}`}>
+        {favoriteServers.map((server) => (
+          <Card key={server.id}>
+            <CardContent className="flex flex-col items-center p-4">
+              <img src={server.cover} className="w-full h-full mb-2" />
+              <h4 className="text-lg font-medium text-center">{server.title}</h4>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Favorited Servers Icons for Collapsed Sidebar */}
+      {isCollapsed && (
+        <div className="p-4 space-y-4">
+          {favoriteServers.map((server) => (
+            <img
+              key={server.id}
+              src={server.cover}
+              alt={server.title}
+              className="w-4 h-4 rounded-full"
+              style={{ width: '17px', height: '17px' }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Scrollbar width toggle button */}
       <Button

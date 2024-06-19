@@ -1,3 +1,4 @@
+import React from 'react'
 import rubinotImg from '@/assets/servers/rubinot.jpg'
 import deusotImg from '@/assets/servers/deusot.jpg'
 import taleonImg from '@/assets/servers/taleon.jpg'
@@ -25,11 +26,31 @@ const servers = [
 
 export default function Home() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
+  const [favoriteServers, setFavoriteServers] = React.useState([])
+
+  const handleToggleFavorite = (server) => {
+    setFavoriteServers((prevFavorites: any) => {
+      if (prevFavorites.find((fav) => fav.id === server.id)) {
+        return prevFavorites.filter((fav) => fav.id !== server.id)
+      } else {
+        return [...prevFavorites, server]
+      }
+    })
+  }
+
   return (
     <div className="container h-screen flex bg-background lg:max-w-none lg:px-0">
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      <div className="mx-auto w-full flex flex-col space-y-2 sm:w-[80%] lg:w-[70%] lg:p-8 ml-72 mt-4">
-        <CarouselPlugin servers={servers} />
+      <Sidebar
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+        favoriteServers={favoriteServers}
+      />
+
+      <div className="flex flex-1 flex-col items-center justify-start ml-[300px] p-4 mt-8">
+        <div className="w-full max-w-5xl">
+          <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
+        </div>
+        {/* Adicione outros componentes abaixo conforme necessário */}
       </div>
     </div>
   )
