@@ -39,14 +39,14 @@ export default function Home() {
   }
 
   return (
-    <div className="container h-screen flex bg-background lg:max-w-none lg:px-0">
+    <div className="container h-screen flex flex-col lg:flex-row bg-background lg:max-w-none lg:px-0">
       <Sidebar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         favoriteServers={favoriteServers}
       />
 
-      <div className="flex flex-1 flex-col items-center justify-start ml-[300px] p-4 mt-8">
+      <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0">
         <div className="w-full max-w-5xl">
           <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
         </div>

@@ -19,8 +19,6 @@ export default function Sidebar({
 }: SidebarProps) {
   const [navOpened, setNavOpened] = useState(false)
 
-  console.log('favoriteServers', favoriteServers)
-
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
     if (navOpened) {
@@ -31,84 +29,88 @@ export default function Sidebar({
   }, [navOpened])
 
   return (
-    <aside
-      className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] md:bottom-0 md:right-auto md:h-svh ${isCollapsed ? 'md:w-14' : 'md:w-64'}`,
-        className
-      )}
-    >
-      {/* Overlay in mobile */}
-      <div
-        onClick={() => setNavOpened(false)}
-        className={`absolute inset-0 transition-[opacity] delay-100 duration-700 ${navOpened ? 'h-svh opacity-50' : 'h-0 opacity-0'} w-full bg-black md:hidden`}
-      />
+    <>
+      {/* Toggle Button in mobile */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="fixed top-4 left-4 lg:hidden"
+        aria-label="Toggle Navigation"
+        aria-controls="sidebar-menu"
+        aria-expanded={navOpened}
+        onClick={() => setNavOpened((prev) => !prev)}
+      >
+        {navOpened ? <IconX /> : <IconMenu2 />}
+      </Button>
 
-      {/* Header */}
-      <div className="sticky top-0 justify-between px-4 py-3 shadow md:px-4">
-        <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-          <img
-            src={bunnyLogo}
-            className={`transition-all ${isCollapsed ? 'h-6 w-6' : 'h-16 w-16'}`}
-          />
-          <div
-            className={`flex flex-col justify-end truncate ${
-              isCollapsed ? 'invisible w-0' : 'visible w-auto'
-            }`}
-          >
-            <span className="font-medium">Bunny</span>
+      <aside
+        className={cn(
+          `fixed left-0 top-0 z-50 h-full w-64 border-r-2 border-r-muted transition-all lg:bottom-0 lg:right-auto lg:h-screen ${isCollapsed ? 'lg:w-14' : 'lg:w-64'}`,
+          navOpened ? 'block' : 'hidden lg:block',
+          className
+        )}
+      >
+        {/* Overlay in mobile */}
+        <div
+          onClick={() => setNavOpened(false)}
+          className={`absolute inset-0 transition-opacity duration-300 ${navOpened ? 'h-full opacity-50' : 'h-0 opacity-0'} w-full bg-black lg:hidden`}
+        />
+
+        {/* Header */}
+        <div className="flex justify-between px-4 py-3 shadow lg:px-4">
+          <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
+            <img
+              src={bunnyLogo}
+              className={`transition-all ${isCollapsed ? 'h-6 w-6' : 'h-16 w-16'}`}
+            />
+            <div
+              className={`flex flex-col justify-end truncate ${
+                isCollapsed ? 'invisible w-0' : 'visible w-auto'
+              }`}
+            >
+              <span className="font-medium">Bunny</span>
+            </div>
           </div>
         </div>
 
-        {/* Toggle Button in mobile */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          aria-label="Toggle Navigation"
-          aria-controls="sidebar-menu"
-          aria-expanded={navOpened}
-          onClick={() => setNavOpened((prev) => !prev)}
+        {/* Favorited Servers */}
+        <div
+          className={`flex flex-col items-center justify-center h-full w-full p-4 space-y-4 ${isCollapsed || !navOpened ? 'hidden lg:flex' : 'flex'}`}
         >
-          {navOpened ? <IconX /> : <IconMenu2 />}
-        </Button>
-      </div>
-
-      {/* Favorited Servers */}
-      <div className={`p-4 space-y-4 ${isCollapsed ? 'hidden' : 'block'}`}>
-        {favoriteServers.map((server) => (
-          <Card key={server.id}>
-            <CardContent className="flex flex-col items-center p-4">
-              <img src={server.cover} className="w-full h-full mb-2" />
-              <h4 className="text-lg font-medium text-center">{server.title}</h4>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Favorited Servers Icons for Collapsed Sidebar */}
-      {isCollapsed && (
-        <div className="p-4 space-y-4">
           {favoriteServers.map((server) => (
-            <img
-              key={server.id}
-              src={server.cover}
-              alt={server.title}
-              className="w-4 h-4 rounded-full"
-              style={{ width: '17px', height: '17px' }}
-            />
+            <Card key={server.id} className="w-full max-w-sm">
+              <CardContent className="flex flex-col items-center p-4">
+                <img src={server.cover} className="w-full h-full mb-2 object-cover" />
+                <h4 className="text-lg font-medium text-center">{server.title}</h4>
+              </CardContent>
+            </Card>
           ))}
         </div>
-      )}
 
-      {/* Scrollbar width toggle button */}
-      <Button
-        onClick={() => setIsCollapsed((prev) => !prev)}
-        size="icon"
-        variant="outline"
-        className="absolute -right-5 top-1/2 hidden rounded-full md:inline-flex"
-      >
-        <IconChevronsLeft stroke={1.5} className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
-      </Button>
-    </aside>
+        {/* Favorited Servers Icons for Collapsed Sidebar */}
+        {isCollapsed && (
+          <div className="flex flex-col items-center justify-center h-full w-full p-4 space-y-4 lg:hidden">
+            {favoriteServers.map((server) => (
+              <img
+                key={server.id}
+                src={server.cover}
+                alt={server.title}
+                className="w-8 h-8 rounded-full"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Scrollbar width toggle button */}
+        <Button
+          onClick={() => setIsCollapsed((prev) => !prev)}
+          size="icon"
+          variant="outline"
+          className="absolute -right-5 top-1/2 hidden rounded-full lg:inline-flex"
+        >
+          <IconChevronsLeft stroke={1.5} className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`} />
+        </Button>
+      </aside>
+    </>
   )
 }

@@ -26,7 +26,7 @@ export function CarouselPlugin({ servers, onToggleFavorite }) {
             <div className="p-1 relative">
               <Card>
                 <CardContent className="flex aspect-square items-center justify-center p-6 relative">
-                  <img src={server.cover} className="w-full h-full" />
+                  <img src={server.cover} className="w-full h-full object-cover" />
                   <div className="absolute top-2 right-2">
                     <DropdownMenuCards server={server} onToggleFavorite={onToggleFavorite} />
                   </div>
