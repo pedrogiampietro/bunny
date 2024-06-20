@@ -20,7 +20,7 @@ export function CarouselPlugin({ servers, onToggleFavorite }) {
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
-      <CarouselContent className="-ml-1 pr-4 lg:pr-8">
+      <CarouselContent className="flex overflow-visible">
         {servers.map((server) => (
           <CarouselItem key={server.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
             <div className="p-1 relative">
@@ -36,8 +36,8 @@ export function CarouselPlugin({ servers, onToggleFavorite }) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="absolute -left-6 lg:-left-16" />
-      <CarouselNext className="absolute -right-6 lg:-right-8" />
+      <CarouselPrevious className="absolute left-2 lg:left-4 z-10" />
+      <CarouselNext className="absolute right-2 lg:right-4 z-10" />
     </Carousel>
   )
 }

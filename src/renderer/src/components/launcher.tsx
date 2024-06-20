@@ -25,7 +25,7 @@ const Launcher = () => {
         <ServerDetails client={selectedClient} onBack={handleBack} />
       ) : (
         <>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Meu Launcher</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Lista de Servidores</h1>
           {loading ? (
             <p>Loading...</p>
           ) : (
@@ -34,7 +34,7 @@ const Launcher = () => {
                 {clients.map((client) => (
                   <li
                     key={client.id}
-                    className="flex flex-col sm:flex-row bg-gray-100 rounded-lg p-4 shadow cursor-pointer"
+                    className="flex flex-col sm:flex-row bg-background border rounded-lg p-4 shadow cursor-pointer"
                     onClick={() => handleSelectClient(client)}
                   >
                     <img
@@ -43,9 +43,9 @@ const Launcher = () => {
                       className="w-full sm:w-16 h-16 rounded-lg mb-4 sm:mb-0 sm:mr-4"
                     />
                     <div>
-                      <h2 className="text-lg sm:text-xl text-black font-bold">{client.name}</h2>
-                      <p className="text-gray-700">{client.description}</p>
-                      <p className="text-sm text-gray-500">
+                      <h2 className="text-lg sm:text-xl text-white font-bold">{client.name}</h2>
+                      <p className="text-gray-300">{client.description}</p>
+                      <p className="text-sm text-gray-600">
                         Versão: {client.version} | IP: {client.ip} | Exp: {client.exp}
                       </p>
                     </div>

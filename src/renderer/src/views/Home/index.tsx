@@ -60,11 +60,11 @@ export default function Home() {
         ></div>
       )}
 
-      <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0 overflow-hidden">
-        <div className="w-full max-w-4xl lg:mx-4 xl:mx-8 overflow-auto custom-scrollbar">
+      <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0">
+        <div className="w-full max-w-4xl lg:mx-4 xl:mx-8 custom-scrollbar">
           <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
         </div>
-        <div className="w-full flex-grow overflow-auto mt-4 custom-scrollbar">
+        <div className="w-full">
           <Launcher />
         </div>
       </div>

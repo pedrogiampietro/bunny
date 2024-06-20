@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
 import versions from '@/mock/versions.json'
 import remoteVersions from '@/mock/remoteVersions.json'
+import { CalendarDate } from './components/input-date'
+import { Button } from '@/components/ui/button'
+import { DetailInformations } from './components/information'
+import { SystemRequired } from './components/system-required'
+import { DetailServerComments } from './components/comments'
+import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 
 const compareVersions = (local, remote) => {
   const localParts = local.split('.').map(Number)
@@ -135,7 +144,7 @@ const ServerDetails = ({ client, onBack }) => {
 
       alert(`Cliente ${client.name} instalado em ${installPath}`)
       setInstalled(true)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao instalar o cliente:', error)
       alert(`Erro ao instalar o cliente: ${error.message}`)
     } finally {
@@ -173,34 +182,36 @@ const ServerDetails = ({ client, onBack }) => {
   }
 
   return (
-    <div className="p-4">
-      <button onClick={onBack} className="mb-4 bg-gray-500 text-white px-4 py-2 rounded">
+    <div className="p-8 max-w-4xl mx-auto">
+      <button
+        onClick={onBack}
+        className="mb-4 bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+      >
         Voltar
       </button>
-      <h1 className="text-4xl font-bold mb-4">{client.name}</h1>
-      <div className="mb-4">
-        <p>
-          <strong>IP:</strong> {client.ip}
+      <h1 className="text-4xl font-bold mb-4 text-center">{client.name}</h1>
+
+      <img
+        src={client.cover}
+        alt={`${client.name} cover`}
+        className="mb-4 w-full max-w-md mx-auto rounded shadow-lg"
+      />
+      <div className="mb-8 text-center">
+        <p className="flex gap-5 items-center justify-center">
+          <strong>Data de Lançamento:</strong> <CalendarDate />
+          {/* {client.releaseDate} */}
         </p>
-        <p>
-          <strong>Exp:</strong> {client.exp}
-        </p>
-        <p>
-          <strong>Descrição:</strong> {client.description}
-        </p>
-        <p>
-          <strong>Versão Atual:</strong> {versions[client.name]}
-        </p>
-        <p>
-          <strong>Versão Remota:</strong> {remoteVersions[client.name]}
-        </p>
+
+        <DetailInformations client={client} currentVersion={versions[client.name]} />
+
+        <SystemRequired dataRequired={client.systemRequirements} />
       </div>
-      {loading ? (
-        <p>Loading...</p>
+      {/* {loading ? (
+        <p className="text-center">Loading...</p>
       ) : (
-        <div>
+        <div className="text-center">
           <button
-            className="mb-4 bg-blue-500 text-white px-4 py-2 rounded"
+            className="mb-4 bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600"
             onClick={selectInstallPath}
           >
             Selecionar Caminho de Instalação
@@ -210,31 +221,49 @@ const ServerDetails = ({ client, onBack }) => {
             placeholder="Caminho de instalação"
             value={installPath}
             readOnly
-            className="mb-4 p-2 border rounded w-full"
+            className="mb-4 p-2 border rounded w-full max-w-md mx-auto"
           />
           {installed ? (
             updatesAvailable ? (
               <button
-                className="ml-4 bg-yellow-500 text-white px-2 py-1 rounded"
+                className="ml-4 bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-400"
                 onClick={handleUpdate}
               >
                 Atualizar
               </button>
             ) : (
-              <button className="ml-4 bg-green-500 text-white px-2 py-1 rounded">Jogar</button>
+              <button className="ml-4 bg-green-700 text-white px-2 py-1 rounded hover:bg-green-600">
+                Jogar
+              </button>
             )
           ) : (
-            <>
-              <button
-                className="ml-4 bg-blue-500 text-white px-2 py-1 rounded"
-                onClick={handleDownload}
-              >
-                Download
-              </button>
-            </>
+            <Button onClick={handleDownload}>Download</Button>
           )}
         </div>
-      )}
+      )} */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4 text-center">Comentários</h2>
+
+        {client.comments.map((comment) => {
+          return <DetailServerComments comment={comment} />
+        })}
+      </div>
+
+      <div className="p-4">
+        <form>
+          <div className="grid gap-4">
+            <Textarea className="p-4" placeholder={`Reply to Pedro...`} />
+            <div className="flex items-center">
+              <Label htmlFor="mute" className="flex items-center gap-2 text-xs font-normal">
+                <Switch id="mute" aria-label="Mute thread" /> Mute this thread
+              </Label>
+              <Button onClick={(e) => e.preventDefault()} size="sm" className="ml-auto">
+                Send
+              </Button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
