@@ -31,7 +31,7 @@ export default function Home() {
   const [navOpened, setNavOpened] = React.useState(false)
 
   const handleToggleFavorite = (server) => {
-    setFavoriteServers((prevFavorites: any) => {
+    setFavoriteServers((prevFavorites) => {
       if (prevFavorites.find((fav) => fav.id === server.id)) {
         return prevFavorites.filter((fav) => fav.id !== server.id)
       } else {
@@ -61,10 +61,12 @@ export default function Home() {
       )}
 
       <div className="flex flex-1 flex-col items-center justify-center lg:justify-start lg:ml-64 p-4 mt-8 lg:mt-0 overflow-hidden">
-        <div className="w-full max-w-4xl lg:mx-4 xl:mx-8">
+        <div className="w-full max-w-4xl lg:mx-4 xl:mx-8 overflow-auto custom-scrollbar">
           <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
         </div>
-        <Launcher />
+        <div className="w-full flex-grow overflow-auto mt-4 custom-scrollbar">
+          <Launcher />
+        </div>
       </div>
     </div>
   )
