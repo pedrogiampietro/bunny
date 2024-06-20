@@ -5,6 +5,7 @@ import taleonImg from '@/assets/servers/taleon.jpg'
 import { CarouselPlugin } from '@/components/carousel'
 import Sidebar from '@/components/sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
+import Launcher from '@/components/launcher'
 
 const servers = [
   {
@@ -50,7 +51,7 @@ export default function Home() {
         <div className="w-full max-w-5xl">
           <CarouselPlugin servers={servers} onToggleFavorite={handleToggleFavorite} />
         </div>
-        {/* Adicione outros componentes abaixo conforme necessário */}
+        <Launcher />
       </div>
     </div>
   )
