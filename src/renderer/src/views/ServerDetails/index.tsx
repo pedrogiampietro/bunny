@@ -39,9 +39,15 @@ const ServerDetails = ({ client, onBack }) => {
     setTmpPath(tmp)
   }, [])
 
+  useEffect(() => {
+    checkForUpdates()
+  }, [client])
+
   const checkForUpdates = () => {
     const localVersion = versions[client.name]
     const remoteVersion = remoteVersions[client.name]
+
+    console.log('client.name', client.name)
 
     if (!localVersion || !remoteVersion) {
       console.warn(`Versão local ou remota não encontrada para o cliente ${client.name}`)
@@ -56,8 +62,8 @@ const ServerDetails = ({ client, onBack }) => {
   const handleDownload = async () => {
     setLoading(true)
     try {
-      const serverPath = window.api.path.join(basePath, 'mock', 'Rubinot.zip')
-      const downloadPath = window.api.path.join(tmpPath, 'Rubinot.zip')
+      const serverPath = window.api.path.join(basePath, 'mock', `${client.name}.zip`)
+      const downloadPath = window.api.path.join(tmpPath, `${client.name}.zip`)
 
       window.api.fs.copyFileSync(serverPath, downloadPath)
       console.log(`Copied ${serverPath} to ${downloadPath}`)
@@ -79,8 +85,8 @@ const ServerDetails = ({ client, onBack }) => {
     }
     setLoading(true)
     try {
-      const downloadPath = window.api.path.join(tmpPath, 'Rubinot.zip')
-      const unzipPath = window.api.path.join(tmpPath, 'Rubinot')
+      const downloadPath = window.api.path.join(tmpPath, `${client.name}.zip`)
+      const unzipPath = window.api.path.join(tmpPath, client.name)
 
       console.log(`Starting extraction of ${downloadPath} to ${unzipPath}`)
       await window.api.unzip(downloadPath, unzipPath)
@@ -140,8 +146,8 @@ const ServerDetails = ({ client, onBack }) => {
   const handleUpdate = async () => {
     setLoading(true)
     try {
-      const serverPath = window.api.path.join(basePath, 'mock', 'Rubinot.zip')
-      const downloadPath = window.api.path.join(tmpPath, 'Rubinot.zip')
+      const serverPath = window.api.path.join(basePath, 'mock', `${client.name}.zip`)
+      const downloadPath = window.api.path.join(tmpPath, `${client.name}.zip`)
 
       window.api.fs.copyFileSync(serverPath, downloadPath)
       console.log(`Updated ${serverPath} to ${downloadPath}`)
@@ -165,10 +171,6 @@ const ServerDetails = ({ client, onBack }) => {
       console.error('Erro ao selecionar a pasta:', error)
     }
   }
-
-  useEffect(() => {
-    checkForUpdates()
-  }, [])
 
   return (
     <div className="p-4">
