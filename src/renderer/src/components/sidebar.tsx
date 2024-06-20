@@ -81,11 +81,11 @@ export default function Sidebar({
 
         {/* Favorited Servers */}
         <div
-          className={`flex flex-col items-center justify-center h-full w-full p-4 space-y-4 ${isCollapsed || !navOpened ? 'hidden lg:flex' : 'flex'}`}
+          className={`flex flex-col items-center justify-center h-full w-full p-6 space-y-4 ${isCollapsed ? 'hidden' : 'flex lg:flex'}`}
         >
           {favoriteServers.map((server) => (
             <Card key={server.id} className="w-full max-w-sm">
-              <CardContent className="flex flex-col items-center p-4">
+              <CardContent className="flex flex-col items-center p-2">
                 <img src={server.cover} className="w-full h-full mb-2 object-cover" />
                 <h4 className="text-lg font-medium text-center">{server.title}</h4>
               </CardContent>
@@ -95,13 +95,13 @@ export default function Sidebar({
 
         {/* Favorited Servers Icons for Collapsed Sidebar */}
         {isCollapsed && (
-          <div className="flex flex-col items-center justify-center h-full w-full p-4 space-y-4 lg:hidden">
+          <div className="flex flex-col items-center justify-center h-full w-full p-2 space-y-4">
             {favoriteServers.map((server) => (
               <img
                 key={server.id}
                 src={server.cover}
                 alt={server.title}
-                className="w-8 h-8 rounded-full"
+                className="w-10 h-10 object-cover rounded-full"
               />
             ))}
           </div>
